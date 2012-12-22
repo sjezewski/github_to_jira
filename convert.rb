@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require_relative 'github'
-
+require 'yaml'
 
 #puts "Open Milestones"
 #milestones = openMilestones("manhattan")
@@ -12,10 +12,26 @@ require_relative 'github'
 #issues = openIssuesForMilestone("manhattan", "4.2")
 #puts issues.size
 
+config_file = ARGV[0] == nil ? "config/example.yml" : ARGV[0]
 
-repo = Github::Repository.new("moovweb", "manhattan")
+config = YAML.load(File.read(config_file))
 
-milestones = repo.milestones
-puts milestones
+puts config
 
-issues = repo.issues({:milestone => milestones["4.2"]["number"]})
+
+config[:github_repos].each do |gh_repo|
+  repo = Github::Repository.new(config[:organization], gh_repo)  
+
+  puts "---"
+  puts gh_repo
+  puts "---"
+  milestones = repo.milestones
+  puts milestones
+
+#  issues = repo.issues({:milestone => milestones["4.2"]["number"]})
+end
+
+
+
+
+

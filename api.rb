@@ -1,4 +1,3 @@
-require_relative 'config'
 require 'mechanize'
 require 'json'
 

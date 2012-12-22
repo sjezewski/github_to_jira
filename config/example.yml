@@ -1,0 +1,5 @@
+:organization: "github"
+:github_repos:
+ - "albino"
+:user_id:
+  "some_github_username":  "some.jira.username"
