@@ -29,8 +29,11 @@ config[:github_repos].each do |gh_repo|
   puts milestones
 
   milestones.each do |name, milestone|
+    puts "     "
+    puts " --- "
+    puts "Milestone [#{name}]:"
     issues = repo.issues({:milestone => milestone["number"]}) 
-    puts "Milestone [#{name}] issue count: #{issues.size}"
+    puts "issue count: #{issues.size}"
   end
 
   

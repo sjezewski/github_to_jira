@@ -28,14 +28,37 @@ module Github
         result = @apiContext.execute("issues", params)
 
         issueSet = JSON.parse(result.body)
+        puts "# issues: #{issueSet.size}"
         issues << issueSet
 
-        pagination = result.header["link"]
-        puts pagination
+        if result.header["link"].nil?
+          lastPage = true
+        else
+          pagination = parse_pagination(result.header["link"])
+          next_page = pagination["next"]
+          params[:page] = next_page
+          lastPage = true if next_page.nil?          
+        end
+
       end
 
       issues.flatten
     end   
+
+    private
+
+    def parse_pagination(raw)  # <https://api.github.com/repos/moovweb/manhattan/issues?milestone=24&page=2>; rel=\"next\", <https://api.github.com/repos/moovweb/manhattan/issues?milestone=24&page=2>; rel=\"last\""
+      pages = {}
+
+      raw.split(",").each do |raw_page|
+        raw_page =~ /\<.*?page=(.*?)\>.*?rel=\"(.*?)\"/
+        pages[$2] = $1
+      end
+
+      puts pages
+
+      pages
+    end
 
   end
 
