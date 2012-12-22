@@ -8,7 +8,7 @@ module Github
       @apiContext = API.new(org,name)
     end
 
-    def milestones(params) # {:state => "open"}
+    def milestones(params={:state => "open"})
       result = @apiContext.execute("milestones", params)
       openMilestones = {}
 
