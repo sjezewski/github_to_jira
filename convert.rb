@@ -13,7 +13,7 @@ require_relative 'github'
 #puts issues.size
 
 
+repo = Github::Repository.new("moovweb", "manhattan")
 
-
-
-
+milestones = repo.milestones({:state => "open"})
+puts milestones

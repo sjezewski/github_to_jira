@@ -5,13 +5,11 @@ module Github
   class Repository
 
     def initialize(org, name)
-      @org = org
-      @name = name
-
+      @apiContext = API.new(org,name)
     end
 
     def milestones(params) # {:state => "open"}
-      result = github_api({:repo => @name, :org => @org}, "milestones", params)
+      result = @apiContext.execute("milestones", params)
       openMilestones = {}
 
       JSON.parse(result.body).each do |milestone|
@@ -29,20 +27,13 @@ module Github
       issues = []
 
       while !lastPage
-      
-
-        result = github_api({:repo => @name, :org => @org}, "issues", params)
+        result = @apiContext.execute("issues", params)
 
         issueSet = JSON.parse(result.body)
         issues << issueSet
 
         pagination = result.header["link"]
         puts pagination
-
-        
-
-        
-
       end
 
       issues.flatten
@@ -56,7 +47,7 @@ module Github
 
       puts "No such milestone #{milestone}" if thisMilestone.nil?
 
-      result = github_api({:repo => @name, :org => @org}, "issues", {:state => "open", :milestone => thisMilestone["number"]})
+      result = @apiContext.execute("issues", {:state => "open", :milestone => thisMilestone["number"]})
 
       puts result.code
       puts result.body

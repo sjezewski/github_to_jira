@@ -7,79 +7,77 @@ module Github
 
   class API
 
-    class << self
+    def initialize(org, repo)
+      authenticate()      
 
-      $root = "https://api.github.com"
+      @org = org
+      @repo = repo
 
-      $github_api_config = {
+      @root = "https://api.github.com"
+
+      @actions = {
         "auth" => {
-          :url => "#{$root}/authorizations",
+          :url => "#{@root}/authorizations",
           :verb => :post
         },
         "issues" => {
-          #    :url => "https://api.github.com/repos/moovweb/manhattan/issues",
-          :url => "#{$root}/repos/moovweb/manhattan/issues",
+          :url => "#{@root}/repos/#{@org}/#{@repo}/issues",
           :verb => :get
         },
         "milestones" => {
-          :url => "#{$root}/repos/moovweb/<%=context[:repo]%>/milestones",
+          :url => "#{@root}/repos/#{@org}/#{@repo}/milestones",
           :verb => :get
         },
         "issues" => {
-          :url => "#{$root}/repos/moovweb/<%=context[:repo]%>/issues",
+          :url => "#{@root}/repos/#{@org}/#{@repo}/issues",
           :verb => :get
         }
       }
 
-      def api_url(action, context={})
-        action = $github_api_config[action]
 
-        url_template = ERB.new(action[:url])
-        action[:url] = url_template.result(binding)
-
-        action
-      end
+    end
 
 
-      def authenticate()
-        token = File.read("#{ENV["HOME"]}/.g2j/token")
-        return token
+    def authenticate()
+      @token = "Basic " + File.read("#{ENV["HOME"]}/.g2j/token")
+      return
 
-        #TODO: Hook this back in if the token isn't found
+      #TODO: Hook this back in if the token isn't found
 
-        puts "github username:"
-        user = gets.chomp
-        puts "password:"
-        system "stty -echo"
-        password = gets.chomp
-        system "stty echo"  
-        
-        Base64.encode64(user + ":" + password)
-      end
+      puts "github username:"
+      user = gets.chomp
+      puts "password:"
+      system "stty -echo"
+      password = gets.chomp
+      system "stty echo"  
+      
+      Base64.encode64(user + ":" + password)
+    end
 
-      def execute(context, action, params={}, body={})
-        m = Mechanize.new()
-        method = github_api_method(action, context)
-        url = method[:url]
-        puts url
-        verb = method[:verb]
+    def execute(action, params={}, body={})
 
-        headers = {"Content-Type" => "application/json", "Authorization" => $token}
+      m = Mechanize.new()
+      action = @actions[action]
+      url = action[:url]
+      puts url
+      verb = action[:verb]
 
-        puts "Sending: #{verb} : #{url} : #{params} : #{body} : #{headers}"
-        
-        if verb == :get
-          m.get(url, params, nil, headers)
-        else
-          m.send(verb, url, body.to_json, headers)
-        end
+      headers = {"Content-Type" => "application/json", "Authorization" => @token}
 
-
+      puts "Sending: #{verb} : #{url} : #{params} : #{body} : #{headers}"
+      
+      if verb == :get
+        m.get(url, params, nil, headers)
+      else
+        m.send(verb, url, body.to_json, headers)
       end
 
 
     end
 
+
   end
+
+
 
 end
