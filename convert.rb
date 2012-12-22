@@ -17,3 +17,5 @@ repo = Github::Repository.new("moovweb", "manhattan")
 
 milestones = repo.milestones
 puts milestones
+
+issues = repo.issues({:milestone => milestones["4.2"]["number"]})
