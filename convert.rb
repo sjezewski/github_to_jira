@@ -28,10 +28,13 @@ config[:github_repos].each do |gh_repo|
   milestones = repo.milestones
   puts milestones
 
-#  issues = repo.issues({:milestone => milestones["4.2"]["number"]})
+  milestones.each do |name, milestone|
+    issues = repo.issues({:milestone => milestone["number"]}) 
+    puts "Milestone [#{name}] issue count: #{issues.size}"
+  end
 
-  puts "Hit any key to continue"
-  gets.chomp
+  
+
 end
 
 

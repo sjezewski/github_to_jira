@@ -35,30 +35,7 @@ module Github
       end
 
       issues.flatten
-    end
-
-
-    def issuesForMilestone(milestone)
-      puts "repo #{repo}, milestone #{milestone}"
-      milestones = openMilestones(@name)
-      thisMilestone = milestones[milestone]
-
-      puts "No such milestone #{milestone}" if thisMilestone.nil?
-
-      result = @apiContext.execute("issues", {:state => "open", :milestone => thisMilestone["number"]})
-
-      puts result.code
-      puts result.body
-      puts result.header.keys
-
-      pagination = result.header["link"]
-      puts pagination
-
-      JSON.parse(result.body)
-    end
-    
-
-
+    end   
 
   end
 
