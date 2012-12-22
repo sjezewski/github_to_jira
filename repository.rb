@@ -19,9 +19,7 @@ module Github
       openMilestones
     end
 
-    def issues(params)
-      puts "repo #{repo}, milestone #{milestone}"
-
+    def issues(params={:state => "open"})
       lastPage = false
 
       issues = []

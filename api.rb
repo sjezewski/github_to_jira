@@ -33,25 +33,6 @@ module Github
           :verb => :get
         }
       }
-
-
-    end
-
-
-    def authenticate()
-      @token = "Basic " + File.read("#{ENV["HOME"]}/.g2j/token")
-      return
-
-      #TODO: Hook this back in if the token isn't found
-
-      puts "github username:"
-      user = gets.chomp
-      puts "password:"
-      system "stty -echo"
-      password = gets.chomp
-      system "stty echo"  
-      
-      Base64.encode64(user + ":" + password)
     end
 
     def execute(action, params={}, body={})
@@ -75,9 +56,24 @@ module Github
 
     end
 
+    private
+
+    def authenticate()
+      @token = "Basic " + File.read("#{ENV["HOME"]}/.g2j/token")
+      return
+
+      #TODO: Hook this back in if the token isn't found
+
+      puts "github username:"
+      user = gets.chomp
+      puts "password:"
+      system "stty -echo"
+      password = gets.chomp
+      system "stty echo"  
+      
+      Base64.encode64(user + ":" + password)
+    end
 
   end
-
-
 
 end
