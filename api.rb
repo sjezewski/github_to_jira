@@ -14,30 +14,12 @@ module Github
 
       @root = "https://api.github.com"
 
-      @actions = {
-        "auth" => {
-          :url => "#{@root}/authorizations",
-          :verb => :post
-        },
-        "issues" => {
-          :url => "#{@root}/repos/#{@org}/#{@repo}/issues",
-          :verb => :get
-        },
-        "milestones" => {
-          :url => "#{@root}/repos/#{@org}/#{@repo}/milestones",
-          :verb => :get
-        },
-        "issues" => {
-          :url => "#{@root}/repos/#{@org}/#{@repo}/issues",
-          :verb => :get
-        }
-      }
     end
 
-    def execute(action, params={}, body={})
+    def execute(action, params={}, body={}, context={})
 
       m = Mechanize.new()
-      action = @actions[action]
+      action = actions(action, context)
       url = action[:url]
       puts url
       verb = action[:verb]
@@ -56,6 +38,33 @@ module Github
     end
 
     private
+
+    def actions(name, context={})
+      actions = {
+        "auth" => {
+          :url => "#{@root}/authorizations",
+          :verb => :post
+        },
+        "issues" => {
+          :url => "#{@root}/repos/#{@org}/#{@repo}/issues",
+          :verb => :get
+        },
+        "milestones" => {
+          :url => "#{@root}/repos/#{@org}/#{@repo}/milestones",
+          :verb => :get
+        },
+        "issues" => {
+          :url => "#{@root}/repos/#{@org}/#{@repo}/issues",
+          :verb => :get
+        },
+        "issue" => {
+          :url => "#{@root}/repos/#{@org}/#{@repo}/issues/#{context[:number]}",
+          :verb => :get
+        }
+      }
+
+      actions[name]
+    end
 
     def authenticate()
       @token = "Basic " + File.read("#{ENV["HOME"]}/.g2j/token")

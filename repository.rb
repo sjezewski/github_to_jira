@@ -48,8 +48,9 @@ module Github
       issues.flatten
     end   
 
-    def issue()
-      
+    def issue(number)
+      result = @apiContext.execute("issue", {}, {}, {:number => number})      
+      JSON.parse(result.body)
     end
 
     private

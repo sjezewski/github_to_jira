@@ -34,6 +34,16 @@ config[:github_repos].each do |gh_repo|
     puts "Milestone [#{name}]:"
     issues = repo.issues({:milestone => milestone["number"]}) 
     puts "issue count: #{issues.size}"
+
+    issues.each do |issue|
+      number = issue["number"]
+      issue = repo.issue(number)
+#      puts issue
+      assignee = issue['assignee'].nil? ? nil : issue['assignee']['login']
+
+      puts "Issue #{number} :: #{assignee} :: #{issue['title']}"
+    end
+
   end
 
   
