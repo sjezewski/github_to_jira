@@ -4,8 +4,8 @@ curl -u 'sjezewski' -v -XPOST -d @auth_body.json -H "Content-Type: application/j
 # above works ... but then whats the point of the client id / secret?
 
 
-# From authorization got token: 039c978c00d44441cc8298c5c527b2a91661cf46
-curl -H "Authorization: 039c978c00d44441cc8298c5c527b2a91661cf46" https://api.github.com/repos/moovweb/manhattan/issues
+# From authorization got token: xx
+curl -H "Authorization: xx" https://api.github.com/repos/moovweb/manhattan/issues
 
 # For a milestone
 curl -H "Authorization: Basic xx" https://api.github.com/repos/moovweb/manhattan/issues?state=open&milestone=155714
