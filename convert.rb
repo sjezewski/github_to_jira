@@ -29,6 +29,9 @@ config[:github_repos].each do |gh_repo|
   puts milestones
 
 #  issues = repo.issues({:milestone => milestones["4.2"]["number"]})
+
+  puts "Hit any key to continue"
+  gets.chomp
 end
 
 
