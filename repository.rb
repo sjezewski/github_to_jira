@@ -10,13 +10,16 @@ module Github
 
     def milestones(params={:state => "open"})
       result = @apiContext.execute("milestones", params)
-      openMilestones = {}
+      milestones_by_name = {}
 
       JSON.parse(result.body).each do |milestone|
-        openMilestones[milestone["title"]] = milestone
+        milestones_by_name[milestone["title"]] = milestone
       end
 
-      openMilestones
+      # Usually want unfiled ones too
+      milestones_by_name["none"] = {"number" => "none"}
+
+      milestones_by_name
     end
 
     def issues(params={:state => "open"})
@@ -44,6 +47,10 @@ module Github
 
       issues.flatten
     end   
+
+    def issue()
+      
+    end
 
     private
 
