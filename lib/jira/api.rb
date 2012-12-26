@@ -63,10 +63,9 @@ module Jira
       creds = credentials
 
       result = execute("auth", {}, creds)
-      puts "JIRA Auth:"
-      puts result.code
-      puts result.body
-      puts result.header
+      cookies = result.header['set-cookie']
+      cookies =~ /(studio\.crowd\.tokenkey=[^"]+?);/
+      @token = $1
 
     end
 
