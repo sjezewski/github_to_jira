@@ -22,11 +22,8 @@ module GithubToJira
         puts "Milestones : \t#{milestones.keys}"
 
         milestones.each do |name, milestone|
-          puts "     "
-          puts " --- "
-          puts "Milestone [#{name}]:"
           issues = repo.issues({:milestone => milestone["number"]}) 
-          puts "issue count: #{issues.size}"
+          puts "\tMilestone [#{name}] : issue count: #{issues.size}"
 
           issues.each do |issue|
             number = issue["number"]
@@ -34,7 +31,7 @@ module GithubToJira
             assignee = issue['assignee'].nil? ? nil : issue['assignee']['login']
             issue[:assignee] = assignee
 
-            puts "Issue #{number} :: #{assignee} :: #{issue['title']}"
+            puts "\t\tIssue #{number} :: #{assignee} :: #{issue['title']}"
           end
         end
       end

@@ -13,7 +13,7 @@ module Github
       @repo = repo
 
       @root = "https://api.github.com"
-
+      @debug = false
     end
 
     def execute(action, params={}, body={}, context={})
@@ -21,12 +21,12 @@ module Github
       m = Mechanize.new()
       action = actions(action, context)
       url = action[:url]
-      puts url
+      puts url if @debug
       verb = action[:verb]
 
       headers = {"Content-Type" => "application/json", "Authorization" => @token}
 
-      puts "Sending: #{verb} : #{url} : #{params} : #{body} : #{headers}"
+      puts "Sending: #{verb} : #{url} : #{params} : #{body} : #{headers}" if @debug
       
       if verb == :get
         m.get(url, params, nil, headers)

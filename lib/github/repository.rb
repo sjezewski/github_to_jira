@@ -31,7 +31,7 @@ module Github
         result = @apiContext.execute("issues", params)
 
         issueSet = JSON.parse(result.body)
-        puts "# issues: #{issueSet.size}"
+        puts "# issues: #{issueSet.size}" if @debug
         issues << issueSet
 
         if result.header["link"].nil?
@@ -73,7 +73,7 @@ module Github
         pages[$2] = $1
       end
 
-      puts pages
+      puts pages if @debug
 
       pages
     end
