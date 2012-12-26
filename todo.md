@@ -4,8 +4,11 @@
 - auth (X)
 - get repo open milestones (X)
 - get milestone open issues (X)
-- get individial issue
-- get next page of milestone open issues
+  - get all past pagination (X)
+- get individial issue (X)
+  - get assignee (X)
+  - get comments (X)
+
 
 # JIRA Write
 

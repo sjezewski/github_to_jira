@@ -22,7 +22,7 @@ module Github
       milestones_by_name
     end
 
-    def issues(params={:state => "open"})
+    def issues(params={:state => "open"}, with_comments=true)
       lastPage = false
 
       issues = []
@@ -45,7 +45,17 @@ module Github
 
       end
 
-      issues.flatten
+      issues.flatten!
+
+      if with_comments
+        issues.each do |issue|
+          result = @apiContext.execute(issue["comments_url"])
+          comments = JSON.parse(result.body)
+          issue["comments"] = comments
+        end
+      end
+
+      issues
     end   
 
     def issue(number)

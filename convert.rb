@@ -38,7 +38,6 @@ config[:github_repos].each do |gh_repo|
     issues.each do |issue|
       number = issue["number"]
       issue = repo.issue(number)
-#      puts issue
       assignee = issue['assignee'].nil? ? nil : issue['assignee']['login']
 
       puts "Issue #{number} :: #{assignee} :: #{issue['title']}"

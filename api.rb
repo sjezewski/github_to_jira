@@ -63,7 +63,10 @@ module Github
         }
       }
 
-      actions[name]
+      action = actions[name]
+      action = {:url => name, :verb => :get} if action.nil?
+
+      action
     end
 
     def authenticate()
