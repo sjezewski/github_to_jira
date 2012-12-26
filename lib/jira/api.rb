@@ -33,15 +33,14 @@ module Jira
     private
 
     def actions(name)
-      root = "https://moovweb.atlassian.net/rest"
 
       actions = {
         "auth" => {
-          :url => "#{root}/auth/1/session",
+          :url => "#{@jira_root}/auth/1/session",
           :verb => :post
         },
         "projectVersions" => {          
-          :url => "#{root}/api/2/project/#{@project_id}/versions",
+          :url => "#{@jira_root}/api/2/project/#{@project_id}/versions",
           :verb => :get
         }
       }
@@ -51,19 +50,19 @@ module Jira
     
     def credentials
       puts "jira username:"
-      user = gets.chomp
+      user = $stdin.readline.strip
       puts "password:"
       system "stty -echo"
-      password = gets.chomp
+      password = $stdin.readline.strip
       system "stty echo"  
 
-      {:user => user, :password => password}
+      {:username => user, :password => password}
     end
 
     def authenticate
       creds = credentials
 
-      result = execute("auth", {}, creds.to_json)
+      result = execute("auth", {}, creds)
       puts "JIRA Auth:"
       puts result.code
       puts result.body
