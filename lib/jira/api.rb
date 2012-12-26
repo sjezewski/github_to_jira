@@ -4,7 +4,8 @@ require 'JSON'
 module Jira
   class API
 
-    def initialize(project_id)
+    def initialize(jira_root, project_id)
+      @jira_root = jira_root
       @project_id = project_id
       authenticate
     end

@@ -1,3 +1,3 @@
-require_relative 'api'
-require_relative 'repository'
+require_relative 'github/api'
+require_relative 'github/repository'
 

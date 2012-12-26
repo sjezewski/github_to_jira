@@ -1,55 +1,46 @@
-#!/usr/bin/env ruby
-
 require_relative 'github'
+require_relative 'jira'
 require 'yaml'
 
 module GithubToJira
   class Converter
-    class << self
 
-      def initialize(config_file)
-        @config = YAML.load(File.read(config_file))        
-        puts @config
-        @jira_context = JIRA::API.new
-      end
+    def initialize(config_file)
+      @config = YAML.load(File.read(config_file))        
+      puts @config
+    end
 
-      def convert
+    def convert
 
-        config[:github_repos].each do |gh_repo|
-          repo = Github::Repository.new(config[:organization], gh_repo)  
+      @config[:repo_to_project].each do |gh_repo, jira_repo|
+        repo = Github::Repository.new(@config[:github_organization], gh_repo)  
 
-          puts "---"
-          puts gh_repo
-          puts "---"
-          milestones = repo.milestones
-          puts milestones
+        puts "---"
+        puts gh_repo
+        puts "---"
+        milestones = repo.milestones
+        puts "Milestones : \t#{milestones.keys}"
 
-          milestones.each do |name, milestone|
-            puts "     "
-            puts " --- "
-            puts "Milestone [#{name}]:"
-            issues = repo.issues({:milestone => milestone["number"]}) 
-            puts "issue count: #{issues.size}"
+        milestones.each do |name, milestone|
+          puts "     "
+          puts " --- "
+          puts "Milestone [#{name}]:"
+          issues = repo.issues({:milestone => milestone["number"]}) 
+          puts "issue count: #{issues.size}"
 
-            issues.each do |issue|
-              number = issue["number"]
-              issue = repo.issue(number)
-              assignee = issue['assignee'].nil? ? nil : issue['assignee']['login']
-              issue[:assignee] = assignee
+          issues.each do |issue|
+            number = issue["number"]
+            issue = repo.issue(number)
+            assignee = issue['assignee'].nil? ? nil : issue['assignee']['login']
+            issue[:assignee] = assignee
 
-              puts "Issue #{number} :: #{assignee} :: #{issue['title']}"
-            end
+            puts "Issue #{number} :: #{assignee} :: #{issue['title']}"
           end
         end
-
-        
       end
 
+      
     end
+
   end
-end
-
-
-if $__PROGRAM_NAME__ == ARGC
-  config_file = ARGV[0] == nil ? "config/example.yml" : ARGV[0]
 end

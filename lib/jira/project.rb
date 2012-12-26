@@ -7,10 +7,10 @@ module JIRA
 
     def create_issue(details)
       context = {
-        :title => details["title"]
-        :body => details["body"]
-        :comments => details["comments"]
-        :assignee => details[:assignee]
+        :title => details["title"],
+        :body => details["body"],
+        :comments => details["comments"],
+        :assignee => details[:assignee],
         :milestone => details["milestone"]
       }
 

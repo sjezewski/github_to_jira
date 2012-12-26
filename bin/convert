@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/convert"
+
+config_file = ARGV[0] == nil ? "config/example.yml" : ARGV[0]
+converter = GithubToJira::Converter.new(config_file)
+converter.convert
+
