@@ -1,8 +1,10 @@
-module JIRA
+require_relative 'api'
+
+module Jira
   class Project
-    def initialize(project_id)
+    def initialize(jira_root, project_id)
       @project_id = project_id
-      @context = JIRA::API.new(project_id)
+      @context = Jira::API.new(jira_root, project_id)
     end
 
     def create_issue(details)
