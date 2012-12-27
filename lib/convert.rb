@@ -12,22 +12,39 @@ module GithubToJira
 
     def convert
 
-      @config[:repo_to_project].each do |gh_repo, jira_repo|
-        repo = Github::Repository.new(@config[:github_organization], gh_repo)  
+      @config[:repo_to_project].each do |gh_repo, jira_proj|
+        source = Github::Repository.new(@config[:github_organization], gh_repo)  
 
         puts "---"
         puts gh_repo
         puts "---"
-        milestones = repo.milestones
+        milestones = source.milestones
         puts "Milestones : \t#{milestones.keys}"
 
+        
+        destination = Jira::Project.new(@config[:jira_root], jira_proj)
+        mismatched_milestones = false
+
+        source.milestones.keys.each do |name|
+          if destination.versions[name].nil?
+            next if name == "none"
+            mismatched_milestones = true 
+            puts "Milestone #{name} exists on github(#{gh_repo}) but not on jira(#{jira_proj})"
+          end
+        end
+
+        if mismatched_milestones == true
+          puts "Invalid destination setup. Milestones must be 1-1"
+          exit 1
+        end
+
         milestones.each do |name, milestone|
-          issues = repo.issues({:milestone => milestone["number"]}) 
+          issues = source.issues({:milestone => milestone["number"]}) 
           puts "\tMilestone [#{name}] : issue count: #{issues.size}"
 
           issues.each do |issue|
             number = issue["number"]
-            issue = repo.issue(number)
+            issue = source.issue(number)
             assignee = issue['assignee'].nil? ? nil : issue['assignee']['login']
             issue[:assignee] = assignee
 

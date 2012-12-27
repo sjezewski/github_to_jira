@@ -10,7 +10,11 @@ jproj = Jira::Project.new(config[:jira_root], "GITT")
 
 
 issue = {
-
+        "title" => "doobeedoo",
+        "body" => "ignore me!",
+        "comments" => "dflaslkdjfas;ldkfjasdlfk;js",
+        "assignee" => "sean.jezewski",
+        "milestone" => "4.2"
 }
 
 jproj.create_issue(issue)

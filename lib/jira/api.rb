@@ -42,6 +42,15 @@ module Jira
         "projectVersions" => {          
           :url => "#{@jira_root}/api/2/project/#{@project_id}/versions",
           :verb => :get
+        },
+        "meta" => {          
+          :url => "#{@jira_root}/api/2/issue/createmeta",
+          :verb => :get
+        },
+        "issue" => {          
+          :url => "#{@jira_root}/api/2/issue",
+#          :url => "http://moovweb.atlassian.net/rest/api/2/issue",
+          :verb => :post
         }
       }
 
