@@ -44,7 +44,6 @@ module GithubToJira
 
           issues.each do |issue|
             number = issue["number"]
-            issue = source.issue(number)
             assignee = issue['assignee'].nil? ? nil : issue['assignee']['login']
             unless assignee.nil?
               assignee = @config[:user_id][assignee]
