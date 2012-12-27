@@ -58,6 +58,10 @@ module GithubToJira
 
             response = destination.create_issue(issue)
             
+            if response['status'] == 500
+              puts "\t\tERROR :: Gihub Issue #{number} :: #{assignee} :: #{issue['title']} --> failed to migrate to Jira : #{response['error']}"
+            end
+
             puts "\t\tGihub Issue #{number} :: #{assignee} :: #{issue['title']} --> JIRA Issue #{response['key']}"
           end
         end

@@ -31,6 +31,8 @@ module Jira
 
       result = @context.execute("issue", {}, body)
 
+      return result unless result['error'].nil?
+
       JSON.parse(result.body)
     end
 

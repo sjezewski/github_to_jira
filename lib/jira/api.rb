@@ -25,7 +25,17 @@ module Jira
       if verb == :get
         m.get(url, params, nil, headers)
       else
-        m.send(verb, url, body.to_json, headers)
+        begin
+          m.send(verb, url, body.to_json, headers)
+        rescue Net::HTTP::Persistent::Error => e
+          error = "Persistent Network Error : #{e} : This can happen if the request body is too big. This request body was #{body.to_json.size} bytes"
+          return {'status' => 500, 'error' => error}
+        rescue Mechanize::ResponseCodeError => e
+          puts "Error Response"
+          puts "====="
+          puts e.page.body
+          exit 1
+        end
       end
 
 
