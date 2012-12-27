@@ -1,0 +1,21 @@
+**Original URL**
+
+<%= fields['html_url'] %>
+
+-----------------
+**Summary**
+
+<%= fields['body'] %>
+
+-----------------
+**Comments**
+
+<% fields['comments'].each do |comment| %>
+---
+*<%= comment['user']['login'] %>* says:
+
+<%= comment['body'] %>
+
+<% end %>
+
+

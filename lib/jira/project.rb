@@ -1,4 +1,5 @@
 require_relative 'api'
+require 'erb'
 
 module Jira
   class Project
@@ -17,7 +18,7 @@ module Jira
         :fields => {
           :project => { :key => @project_id},
           :summary => details["title"],
-          :description => details["body"],          
+          :description => render_body(details),
           :issuetype => {:name => "Bug"},
           :assignee => {:name => details["assignee"] },
         }
@@ -51,6 +52,12 @@ module Jira
       
     end
 
-    
+    def render_body(fields)
+      template_path = File.join(File.split(__FILE__)[0..-2], "body.md.erb")
+      template=ERB.new(File.read(template_path))
+      template.result(binding)
+    end
+
+
   end
 end

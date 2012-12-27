@@ -48,10 +48,11 @@ module Github
       issues.flatten!
 
       if with_comments
-        issues.each do |issue|
+        issues.collect! do |issue|
           result = @apiContext.execute(issue["comments_url"])
           comments = JSON.parse(result.body)
           issue["comments"] = comments
+          issue
         end
       end
 
