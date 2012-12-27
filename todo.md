@@ -12,7 +12,11 @@
 
 # JIRA Write
 
-- get project
+- initialize project (X)
+- check versions (X)
 - new issue
   - assignee
-  - text
+  - title
+  - description
+  - comments
+  - version
