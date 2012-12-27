@@ -12,15 +12,6 @@ module Jira
     end
 
     def create_issue(details)
-      context = {
-        :title => details["title"],
-        :body => details["body"],
-        :comments => details["comments"],
-        :assignee => details["assignee"],
-        :milestone => details["milestone"]
-      }
-
-      puts "Stub for creating issue: #{context}"
 
       body = {
         :fields => {
