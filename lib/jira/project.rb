@@ -21,6 +21,7 @@ module Jira
           :description => render_body(details),
           :issuetype => {:name => "Bug"},
           :assignee => {:name => details["assignee"] },
+          :labels => ["migrated_from_github"]
         }
       }
 

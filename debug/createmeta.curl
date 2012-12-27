@@ -1,0 +1,1 @@
+curl -v -k -L  -H "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7" -H "Accept-Language: en-us,en;q=0.5" -H "Host: moovweb.atlassian.net" -H "Content-Type: application/json" -H "Cookie: studio.crowd.tokenkey=Ua4bonBxf0vMjO7F50ej0Q00" -H "Connection: close" http://moovweb.atlassian.net/rest/api/2/issue/createmeta?expand=projects.issuetypes.fields
