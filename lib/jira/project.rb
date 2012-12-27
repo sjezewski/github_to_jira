@@ -25,7 +25,7 @@ module Jira
         }
       }
 
-      if details["milestone"] != "none"
+      if details["milestone"]["name"] != "none"
         body[:fields][:fixVersions] = [{:name => details["milestone"]["name"]}]
       end
 

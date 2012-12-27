@@ -44,15 +44,16 @@ module GithubToJira
 
           issues.each do |issue|
             number = issue["number"]
-            assignee = issue['assignee'].nil? ? nil : issue['assignee']['login']
-            unless assignee.nil?
-              assignee = @config[:user_id][assignee]
+            gh_assignee = issue['assignee'].nil? ? nil : issue['assignee']['login']
+            unless gh_assignee.nil?
+              assignee = @config[:user_id][gh_assignee]
               if assignee.nil?
-                puts "Error: Github user #{assignee} is missing a corresponding JIRA username"
+                puts "Error: Github user #{gh_assignee} is missing a corresponding JIRA username. Present on #{issue['html_url']}"
                 exit 1
               end
             end
             issue['assignee'] = assignee
+            issue['milestone'] = {'name' => name} if issue['milestone'].nil?
             issue['milestone']['name'] = name
 
             response = destination.create_issue(issue)
