@@ -18,5 +18,5 @@
   - title (X)
   - description (X)
   - version (X)
-  - assignee
+  - assignee (X)
   - comments

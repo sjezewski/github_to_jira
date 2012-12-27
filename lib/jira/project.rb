@@ -19,7 +19,7 @@ module Jira
           :summary => details["title"],
           :description => details["body"],          
           :issuetype => {:name => "Bug"},
-          :assignee => {:name => "sean.jezewski" },
+          :assignee => {:name => details["assignee"] },
         }
       }
 
