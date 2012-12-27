@@ -24,13 +24,12 @@ module Jira
       }
 
       if details["milestone"] != "none"
-        body[:fields][:fixVersions] = [{:name => details["milestone"]}]
+        body[:fields][:fixVersions] = [{:name => details["milestone"]["name"]}]
       end
 
       result = @context.execute("issue", {}, body)
 
-      puts "Issue result! #{result.code}\n\n#{result.body}"
-
+      JSON.parse(result.body)
     end
 
     private
@@ -45,8 +44,6 @@ module Jira
 
       project = data["projects"].find {|p| p["key"] == @project_id}
       bug = project["issuetypes"].find {|i| i["name"] == "Bug"}
-      #puts "BUG=#{bug}"
-      #puts "VERSION META= #{bug['fields']['fixVersions']}"
 
       bug['fields']['fixVersions']['allowedValues'].each do |v|
         @versions[v['name']] = true

@@ -8,18 +8,19 @@ module Jira
       @jira_root = jira_root
       @project_id = project_id
       authenticate
+      @debug = false
     end
 
     def execute(action, params={}, body={})
       m = Mechanize.new()
       action = actions(action)
       url = action[:url]
-      puts url
+      puts url if @debug
       verb = action[:verb]
 
       headers = {"Content-Type" => "application/json", "Cookie" => @token}
 
-      puts "Sending: #{verb} : #{url} : #{params} : #{body} : #{headers}"
+      puts "Sending: #{verb} : #{url} : #{params} : #{body} : #{headers}" if @debug
       
       if verb == :get
         m.get(url, params, nil, headers)
@@ -49,7 +50,6 @@ module Jira
         },
         "issue" => {          
           :url => "#{@jira_root}/api/2/issue",
-#          :url => "http://moovweb.atlassian.net/rest/api/2/issue",
           :verb => :post
         }
       }

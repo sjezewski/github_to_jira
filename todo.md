@@ -14,9 +14,9 @@
 
 - initialize project (X)
 - check versions (X)
-- new issue
+- new issue (X)
+  - title (X)
+  - description (X)
+  - version (X)
   - assignee
-  - title
-  - description
   - comments
-  - version

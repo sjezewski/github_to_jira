@@ -39,8 +39,6 @@ module GithubToJira
         end
 
         milestones.each do |name, milestone|
-          puts "Importing Milestone : \t\t#{name}\n---"
-
           issues = source.issues({:milestone => milestone["number"]}) 
           puts "\tMilestone [#{name}] : issue count: #{issues.size}"
 
@@ -48,12 +46,12 @@ module GithubToJira
             number = issue["number"]
             issue = source.issue(number)
             assignee = issue['assignee'].nil? ? nil : issue['assignee']['login']
-            issue["assignee"] = assignee
- 
-            puts "ISSUE=#{issue}"
-#            destination.create_issue()
+            issue['assignee'] = assignee
+            issue['milestone']['name'] = name
+
+            response = destination.create_issue(issue)
             
-            puts "\t\tIssue #{number} :: #{assignee} :: #{issue['title']}"
+            puts "\t\tGihub Issue #{number} :: #{assignee} :: #{issue['title']} --> JIRA Issue #{response['key']}"
           end
         end
       end
