@@ -20,7 +20,7 @@ The script does NOT:
 - preserve github attachments
 - preserve markdown/html formatting -- all issues are converted as text
   - some markdown features are supported on JIRA, others are not
-
+- create JIRA versions automatically
 
 ## Usage
 
@@ -28,6 +28,7 @@ The script does NOT:
   - your github / jira repos to convert
   - your github / jira usernames
   - your jira config
+- Create all the JIRA versions to correspond to the github milestones
 - Run the script and specify the config file: `./bin/convert config/example.yml`
   - You'll be prompted for you github / jira credentials
   - These are only stored in memory -- the script uses basic auth to authenticate w both APIs (its encrypted over https)
