@@ -19,4 +19,5 @@
   - description (X)
   - version (X)
   - assignee (X)
-  - comments
+  - comments (X)
+  - labels (X)

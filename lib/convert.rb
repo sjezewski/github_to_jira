@@ -44,6 +44,9 @@ module GithubToJira
 
           issues.each do |issue|
             number = issue["number"]
+
+            # Normalize assignee
+
             gh_assignee = issue['assignee'].nil? ? nil : issue['assignee']['login']
             unless gh_assignee.nil?
               assignee = @config[:user_id][gh_assignee]
@@ -53,8 +56,19 @@ module GithubToJira
               end
             end
             issue['assignee'] = assignee
+
+            # Normalize Milestone
+
             issue['milestone'] = {'name' => name} if issue['milestone'].nil?
             issue['milestone']['name'] = name
+
+            # Normalize Labels
+
+            issue['labels'].collect! do |label|
+              label['name']
+            end
+
+            # Create JIRA ticket
 
             response = destination.create_issue(issue)
             
