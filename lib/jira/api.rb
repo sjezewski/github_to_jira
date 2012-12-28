@@ -4,9 +4,10 @@ require 'JSON'
 module Jira
   class API
 
-    def initialize(jira_root, project_id)
+    def initialize(jira_root, project_id, creds)
       @jira_root = jira_root
       @project_id = project_id
+      @creds = creds.to_hash
       authenticate
       @debug = false
     end
@@ -66,26 +67,12 @@ module Jira
 
       actions[name]
     end
-    
-    def credentials
-      puts "jira username:"
-      user = $stdin.readline.strip
-      puts "password:"
-      system "stty -echo"
-      password = $stdin.readline.strip
-      system "stty echo"  
 
-      {:username => user, :password => password}
-    end
-
-    def authenticate
-      creds = credentials
-
-      result = execute("auth", {}, creds)
+    def authenticate      
+      result = execute("auth", {}, @creds)
       cookies = result.header['set-cookie']
       cookies =~ /(studio\.crowd\.tokenkey=[^"]+?);/
       @token = $1
-
     end
 
   end

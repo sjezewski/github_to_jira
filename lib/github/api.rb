@@ -6,11 +6,10 @@ module Github
 
   class API
 
-    def initialize(org, repo)
-      authenticate()      
-
+    def initialize(org, repo, creds)
       @org = org
       @repo = repo
+      @creds = creds
 
       @root = "https://api.github.com"
       @debug = false
@@ -24,7 +23,7 @@ module Github
       puts url if @debug
       verb = action[:verb]
 
-      headers = {"Content-Type" => "application/json", "Authorization" => @token}
+      headers = {"Content-Type" => "application/json", "Authorization" => "Basic #{@creds.encoded}"}
 
       puts "Sending: #{verb} : #{url} : #{params} : #{body} : #{headers}" if @debug
       
@@ -67,22 +66,6 @@ module Github
       action = {:url => name, :verb => :get} if action.nil?
 
       action
-    end
-
-    def authenticate()
-      @token = "Basic " + File.read("#{ENV["HOME"]}/.g2j/token")
-      return
-
-      #TODO: Hook this back in if the token isn't found
-
-      puts "github username:"
-      user = gets.chomp
-      puts "password:"
-      system "stty -echo"
-      password = gets.chomp
-      system "stty echo"  
-      
-      Base64.encode64(user + ":" + password)
     end
 
   end

@@ -4,8 +4,8 @@ module Github
 
   class Repository
 
-    def initialize(org, name)
-      @apiContext = API.new(org,name)
+    def initialize(org, name, credentials)
+      @apiContext = API.new(org, name, credentials)
     end
 
     def milestones(params={:state => "open"})

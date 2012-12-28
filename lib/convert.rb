@@ -1,3 +1,4 @@
+require_relative 'credentials'
 require_relative 'github'
 require_relative 'jira'
 require 'yaml'
@@ -7,23 +8,26 @@ module GithubToJira
 
     def initialize(config_file)
       @config = YAML.load(File.read(config_file))        
-      puts @config
+      @credentials = {
+        :github => Credentials::BasicAuth.new('GitHub'),
+        :jira => Credentials::BasicAuth.new('JIRA')
+      }
     end
 
     def convert
 
       @config[:repo_to_project].each do |gh_repo, jira_proj|
-        source = Github::Repository.new(@config[:github_organization], gh_repo)  
+        source = Github::Repository.new(@config[:github_organization], gh_repo, @credentials[:github])  
 
-        puts "---"
-        puts gh_repo
-        puts "---"
         milestones = source.milestones
-        puts "Milestones : \t#{milestones.keys}"
-
         
-        destination = Jira::Project.new(@config[:jira_root], jira_proj)
+        destination = Jira::Project.new(@config[:jira_root], jira_proj, @credentials[:jira])
         mismatched_milestones = false
+
+        puts "Converting github:#{gh_repo} --> jira:#{jira_proj}"
+        puts "\tMilestones : \t#{milestones.keys}"
+        
+        # Validate Milestones exist in JIRA
 
         source.milestones.keys.each do |name|
           if destination.versions[name].nil?
@@ -37,6 +41,8 @@ module GithubToJira
           puts "Invalid destination setup. Milestones must be 1-1"
           exit 1
         end
+
+        # Convert each Milestone
 
         milestones.each do |name, milestone|
           issues = source.issues({:milestone => milestone["number"]}) 

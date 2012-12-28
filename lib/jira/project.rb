@@ -5,9 +5,9 @@ module Jira
   class Project
     attr_accessor :versions
 
-    def initialize(jira_root, project_id)
+    def initialize(jira_root, project_id, credentials)
       @project_id = project_id
-      @context = Jira::API.new(jira_root, project_id)
+      @context = Jira::API.new(jira_root, project_id, credentials)
       @versions = {}
       gather_meta()
     end
